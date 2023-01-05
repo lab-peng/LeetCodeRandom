@@ -1,3 +1,4 @@
+import math
 from typing import List
 from collections import Counter, defaultdict
 from itertools import zip_longest
@@ -130,7 +131,7 @@ class Solution:
         """
         ans = []
         for i, j in zip(nums1, nums2):
-            if (nums2.index(i) + 1 < len(nums2) - 1 ) and nums2[nums2.index(i) + 1] > i:
+            if (nums2.index(i) + 1 < len(nums2) - 1) and nums2[nums2.index(i) + 1] > i:
                 ans.append(nums2[nums2.index(i) + 1])
             else:
                 ans.append(-1)
@@ -173,6 +174,17 @@ class Solution:
             if count1[k] == count2[k] == 1:
                 ans += 1
         return ans
+
+    def similarPairs(self, words: List[str]) -> int:
+        """
+        2506. Count Pairs Of Similar Strings
+        NOTE: Frozenset is hashable while ordinary set isn't.
+        """
+        words = [frozenset(w) for w in words]
+        count = Counter(words)
+        k_in_n_combination = lambda k, n: math.factorial(n) / (math.factorial(k) * math.factorial(n-k))
+        return int(sum([k_in_n_combination(2, h) for h in count.values() if h > 1]))
+
 
 solution = Solution()
 
@@ -219,11 +231,18 @@ print(solution.kthDistinct(arr, k))
 nums1, nums2 = [2, 4], [1, 2, 3, 4]
 print(solution.nextGreaterElement(nums1, nums2))
 
-text, brokenLetters = "leet code",  "lt"
+text, brokenLetters = "leet code", "lt"
 print(solution.canBeTypedWords(text, brokenLetters))
 
-nums1, nums2 = [1,2,3], [2,4,6]
+nums1, nums2 = [1, 2, 3], [2, 4, 6]
 print(solution.findDifference(nums1, nums2))
 
-words1, words2 = ["leetcode","is","amazing","as","is"], ["amazing","leetcode","is"]
+words1, words2 = ["leetcode", "is", "amazing", "as", "is"], ["amazing", "leetcode", "is"]
 print(solution.countWords(words1, words2))
+
+words = ["aba", "aabb", "abcd", "bac", "aabc"]
+# words = ["aabb","ab","ba"]
+# words = ["nba","cba","dba"]
+print(solution.similarPairs(words))
+
+

@@ -82,10 +82,9 @@ class Solution:
         :return:
         """
         count = Counter(nums)
-        # print(sorted(nums, key=lambda x: count[x]))
-        # print(sorted(nums, key=lambda x: -x))
-        # lambda x: tuple expression
         return sorted(nums, key=lambda x: (count[x], -x))
+
+
 
 
 solution = Solution()

@@ -337,5 +337,13 @@ print(solution.shortestToChar(s, c))
 nums = [4, 2, 5, 7]
 print(solution.sortArrayByParityII(nums))
 
-
-
+command = "G()(al)"
+to_remov = {
+    'G': 'G',
+    '()': 'o',
+    '(al)': 'al'
+}
+for char in to_remov.keys():
+    print(char, to_remov[char])
+    string = command.replace(char, to_remov[char])
+print("Altered string: " + string)

@@ -1,10 +1,10 @@
 # 1002 A+B for Polynomials
 from collections import Counter
 
-p1 = [float(x) for x in input('').split()]
-p2 = [float(x) for x in input('').split()]
-# p1 = [2, 1, 2.4, 0, 3.2]
-# p2 = [2, 2, 1.5, 1, 0.5]
+# p1 = [float(x) for x in input('').split()]
+# p2 = [float(x) for x in input('').split()]
+p1 = [2, 1, 2.4, 0, 3.2]
+p2 = [2, 2, 1.5, 1, 0.5]
 
 
 def get_pol_hm(p):
@@ -25,4 +25,5 @@ for key in sorted(count, reverse=True):
     coeffi = round(count[key], 1)
     ans.append(str(coeffi))
 
-print(' '.join(ans))
+# print(' '.join(ans))
+print(*ans)

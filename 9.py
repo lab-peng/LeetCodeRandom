@@ -1,6 +1,7 @@
 from typing import List, Optional
-from collections import defaultdict, Counter, deque, OrderedDict
+from collections import defaultdict, Counter, deque
 from itertools import zip_longest
+from binary_tree import TreeNode, list_to_tree
 
 
 class Solution:
@@ -359,12 +360,245 @@ class Solution:
     def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
         """
         605. Can Place Flowers
+        Add 0 in the start and 0 in the end, two pointers
         """
-        # TODO
+        fs = [0] + flowerbed + [0]
+        l, r = 0, 2
+        ans = 0
+        while r < len(fs):
+            if 1 not in fs[l: r + 1]:
+                l += 1
+                r += 1
+                ans += 1
+            l += 1
+            r += 1
+        return ans, n <= ans
 
 
 flowerbed, n = [1, 0, 0, 0, 1], 2
-flowerbed, n = [1, 0, 0, 0, 0, 0, 1], 2
+# flowerbed, n = [1, 0, 0, 0, 0, 0, 1], 2
 # flowerbed, n = [0, 0, 1, 0, 1], 1
 s = Solution()
 print(s.canPlaceFlowers(flowerbed, n))
+
+
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        """
+        496. Next Greater Element I
+        """
+        # ans = []
+        # for n1 in nums1:
+        #     sub_nums2 = nums2[nums2.index(n1) + 1:]
+        #     if not sub_nums2 or max(sub_nums2) < n1:
+        #         ans.append(-1)
+        #     else:
+        #         for s in sub_nums2:
+        #             if s > n1:
+        #                 ans.append(s)
+        #                 break
+        # return ans
+
+        # if not nums2:
+        #     return None
+        #
+        # mapping = {}
+        # result = []
+        # stack = [nums2[0]]
+        #
+        # for i in range(1, len(nums2)):
+        #     print(stack, mapping)
+        #     while stack and nums2[i] > stack[-1]:  # if stack is not empty, then compare it's last element with nums2[i]
+        #         mapping[stack[-1]] = nums2[
+        #             i]  # if the new element is greater than stack's top element, then add this to dictionary
+        #         stack.pop()  # since we found a pair for the top element, remove it.
+        #     stack.append(
+        #         nums2[i])  # add the element nums2[i] to the stack because we need to find a number greater than this
+        #
+        # for element in stack:  # if there are elements in the stack for which we didn't find a greater number, map them to -1
+        #     mapping[element] = -1
+        #
+        # for n1 in nums1:
+        #     result.append(mapping[n1])
+        #
+        # return result
+
+        # TODO  logic not fully grasped or not deeply-internalized enough
+        hm = {}
+        ans = []
+        stack = [nums2[0]]
+
+        for i in range(1, len(nums2)):
+            # print(stack, hm)
+            while stack and nums2[i] > stack[-1]:
+                hm[stack[-1]] = nums2[i]
+                stack.pop()
+            stack.append(nums2[i])
+
+        for item in stack:
+            hm[item] = -1
+
+        for n1 in nums1:
+            ans.append(hm[n1])
+        return ans
+
+
+nums1, nums2 = [4, 1, 2], [1, 3, 4, 2]
+nums1, nums2 = [2, 4], [1, 2, 3, 4]
+nums1, nums2 = [1, 3, 5, 2, 4], [6, 5, 4, 3, 2, 1, 7]
+nums1, nums2 = [1, 3, 5, 2, 4], [5, 4, 3, 2, 1]
+s = Solution()
+print(s.nextGreaterElement(nums1, nums2))
+
+
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        """
+        724. Find Pivot Index
+        """
+        total = sum(nums)  # O(n)
+
+        left_sum = 0
+        for i in range(len(nums)):
+            right_sum = total - nums[i] - left_sum
+            if left_sum == right_sum:
+                return i
+            left_sum += nums[i]
+        return -1
+
+
+nums = [1, 7, 3, 6, 5, 6]
+# nums = [6, 5, 6, 3, 7, 1]
+# nums = [1, 2, 3]
+# nums = [2, 1, -1]
+nums = [7, 2, 3, 4, -16, 3]
+
+s = Solution()
+print(s.pivotIndex(nums))
+
+
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        """
+        94. Binary Tree Inorder Traversal
+        """
+        stack, ans = [], []
+        current = root
+        while current or stack:
+            while current:
+                stack.append(current)
+                current = current.left
+            node = stack.pop()
+            ans.append(node.val)
+            current = node.right
+        return ans
+
+        # if not root:
+        #     return []
+        # return self.inorderTraversal(root.left) + [root.val] + self.inorderTraversal(root.right)
+
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        stack = [root]
+        ans = []
+        while stack:
+            current = stack.pop()
+            if current:
+                ans.append(current.val)
+                if current.right:
+                    stack.append(current.right)
+                if current.left:
+                    stack.append(current.left)
+        return ans
+
+        # if not root:
+        #     return []
+        # return [root.val] + self.preorderTraversal(root.left) + self.preorderTraversal(root.right)
+
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        nodes, ans = deque([root]), deque()
+        while nodes:
+            current = nodes.popleft()
+            if current:
+                ans.appendleft(current.val)
+                nodes.appendleft(current.left)
+                nodes.appendleft(current.right)
+        return ans
+
+        # if not root:
+        #     return []
+        # return self.postorderTraversal(root.left) + self.postorderTraversal(root.right) + [root.val]
+
+    def levelorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        ans = []
+        q = deque()
+        if root:
+            q.append(root)
+
+        while q:
+            current = q.popleft()
+            ans.append(current.val)
+
+            if current.left:
+                q.append(current.left)
+            if current.right:
+                q.append(current.right)
+        return (ans)
+
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        q = deque()
+        ans = []
+
+        if root:
+            q.append(root)
+
+        while q:
+            lvl = []
+            for i in range(len(q)):
+                node = q.popleft()
+                lvl.append(node.val)
+
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            ans.append(lvl)
+        return ans
+
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        ans = deque()
+        q = deque()
+
+        if root:
+            q.append(root)
+
+        while q:
+            lvl = []
+            for i in range(len(q)):
+                node = q.popleft()
+                lvl.append(node.val)
+
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            ans.appendleft(lvl)
+        return ans
+
+
+
+
+
+node_list = [1, 2, None, 4, 5]
+node_list = [1, 2, 3, 4, 5, 6, None, None, 9, None, 11, 12]
+# node_list = [1, None, 2, None, None, 3]
+node_list = [1, 2, 3, None, 5, None, 4]
+root = list_to_tree(node_list)
+root.graph()
+
+s = Solution()
+print(s.inorderTraversal(root))
+print(s.preorderTraversal(root))
+print(s.postorderTraversal(root))
+print(s.levelorderTraversal(root))
+print(s.levelOrder(root))
+print(s.levelOrderBottom(root))

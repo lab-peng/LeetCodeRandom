@@ -25,7 +25,7 @@ print(array)
 print(selection_sort(array))
 
 
-# quick sort
+# 2 quick sort
 def quicksort(arr):
     if not arr:
         return []

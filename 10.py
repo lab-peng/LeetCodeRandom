@@ -331,11 +331,13 @@ class Solution:
 
 
 root = list_to_tree([5, 3, 6, 2, 4, None, 8, 1, None, None, None, None, None, 7, 9])
-root.graph()
+# root.graph()
 
 s = Solution()
 ans = s.increasingBST(root)
-ans.graph()
+
+
+# ans.graph()
 
 
 class Solution:
@@ -359,5 +361,47 @@ cards = [3, 4, 2, 3, 4, 7]
 print(s.minimumCardPickup(cards))
 
 
+class Solution:
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        """
+        112. Path Sum
+        """
+        if not root:
+            return False
+        if not root.left and not root.right:
+            return root.val == targetSum
+        return self.hasPathSum(root.left, targetSum - root.val) or self.hasPathSum(root.right, targetSum - root.val)
 
 
+root, targetSum = list_to_tree([5, 4, 8, 11, None, 13, 4, 7, 2, None, None, None, None, None, 1]), 22
+# root.graph()
+s = Solution()
+print(s.hasPathSum(root, targetSum))
+
+
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        """
+        113. Path Sum II
+        """
+        if not root:
+            return []
+
+        q = deque([(root, targetSum, [])])
+        paths = []
+        while q:
+            current, target_sum, path = q.popleft()
+            if not current.left and not current.right and current.val == target_sum:
+                paths.append(path + [current.val])
+            if current.left:
+                q.append((current.left, target_sum - current.val, path + [current.val]))
+            if current.right:
+                q.append((current.right, target_sum - current.val, path + [current.val]))
+
+        return paths
+
+
+root, targetSum = list_to_tree([5, 4, 8, 11, None, 13, 4, 7, 2, None, None, None, None, 5, 1]), 22
+root.graph()
+s = Solution()
+print(s.pathSum(root, targetSum))

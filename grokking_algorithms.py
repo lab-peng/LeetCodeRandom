@@ -1,4 +1,5 @@
 import random
+from typing import List
 
 
 # Suppose you’re a farmer with a plot of land. You want to divide this farm evenly into square plots. You want the plots
@@ -54,3 +55,35 @@ print(sorted(numbers))
 
 merge_sort(numbers)
 print(numbers)
+
+
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        # l, r = 0, len(nums) - 1
+
+        # while l <= r:
+        #     m = (l + r) // 2
+        #     if target == nums[m]:
+        #         return m
+        #     if target > nums[m]:
+        #         l = m + 1
+        #     else:
+        #         r = m - 1
+        # return l
+
+        l, r = 0, len(nums)
+
+        while l < r:
+            m = (l + r) // 2
+            if target > nums[m]:
+                l = m + 1
+            else:
+                r = m
+
+        return l
+
+
+nums = [1, 3, 5, 6]
+target = 5
+s = Solution()
+print(s.searchInsert(nums, target))

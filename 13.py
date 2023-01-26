@@ -601,5 +601,7 @@ class Solution:
         return statistics.mean(arr[percent: -percent])
 
 
+arr = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3]
 
-
+s = Solution()
+print(s.trimMean(arr))

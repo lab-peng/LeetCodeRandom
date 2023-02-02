@@ -1,4 +1,6 @@
 import copy
+from collections import deque
+from typing import Optional
 
 
 class TreeNode:
@@ -120,15 +122,6 @@ def list_to_tree(items: list[int]) -> TreeNode:
     return inner()
 
 
-
-
-
-
-
-
-
-
-
 r1 = TreeNode(1)
 n2 = TreeNode(2)
 n3 = TreeNode(3)
@@ -232,3 +225,72 @@ def min_depth(root):
 
 
 print(min_depth(r1))
+
+
+def bfs_including_null(root):
+    if not root:
+        return []
+    res = []
+    q = deque([root])
+
+    while q:
+        current = q.popleft()
+        res.append(current.val)
+        if current.left and current.right:
+            q.append(current.left)
+            q.append(current.right)
+        elif current.left:
+            q.append(current.left)
+            q.append(TreeNode('null'))
+        elif current.right:
+            q.append(TreeNode('null'))
+            q.append(current.right)
+    return res
+
+
+r1 = TreeNode(1)
+r1.left = TreeNode(2)
+r1.right = TreeNode(3)
+r1.left.left = TreeNode(4)
+
+r2 = TreeNode(1)
+r2.right = TreeNode(2)
+
+r1.graph()
+print(bfs_including_null(r1))
+
+r2.graph()
+print(bfs_including_null(r2))
+
+
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return []
+        q = deque([root])
+
+        while q:
+            lvl = []
+            for i in range(len(q)):
+                current = q.popleft()
+                lvl.append(current.val)
+                if current.left and current.right:
+                    q.append(current.left)
+                    q.append(current.right)
+                elif current.left:
+                    q.append(current.left)
+                    q.append(TreeNode('None'))
+                elif current.right:
+                    q.append(TreeNode('None'))
+                    q.append(current.right)
+            if lvl != lvl[::-1]:
+                return False
+        return True
+
+
+root = list_to_tree([1, 2, 2, 3, 4, 4, 3])
+# root = list_to_tree([1, 2, 2, None, 3, None, 3])
+root = list_to_tree([2, 3, 3, 4, 5, 5, 4, None, None, 8, 9, None, None, 9, 8])
+root.graph()
+s = Solution()
+print(s.isSymmetric(root))

@@ -605,3 +605,32 @@ arr = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3]
 
 s = Solution()
 print(s.trimMean(arr))
+
+
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        if len(s) == 1:
+            return s
+        if len(s) == 2:
+            return s if s[0] == s[1] else s[0]
+
+        s = list(s)
+        hm = {}
+        lgest = 0
+
+        l = 0
+        for r in range(3, len(s) + 1):
+            if s[l:r] != s[l:r][::-1]:
+                l += 1
+            lgest = max(lgest, r - l + 1)
+            print(lgest, s[l:r], l, r)
+            # hm[lgest] = s[l:r]
+            # print(hm)
+        # return ''.join(hm[lgest])
+
+
+print()
+s = 'ccc'
+s = 'abba'
+solution = Solution()
+print(solution.longestPalindrome(s))
